@@ -6,7 +6,11 @@ public class AI : MonoBehaviour
 {
     public Transform PlayerLocation;
     public float speed = .02f;
+    public float playerOffset = .8f; //To offset it tracking the player's feet
     public enum Behavior
+    {
+        Passive, Aggro, GotEm
+    }
     private Behavior currentBehavior = Behavior.Passive;
 
 
@@ -53,13 +57,18 @@ public class AI : MonoBehaviour
 
         newPosition = new Vector3(newX, newY, newZ);
         transform.position = newPosition;
-        //transform.Rotate()
-
     }
 
     void Chillin()
     {
+        //passive state
+    }
 
+    void MoveToPlayerLerp()
+    {
+        Vector3 targetWithOffet = new Vector3(PlayerLocation.position.x, PlayerLocation.position.y + playerOffset, PlayerLocation.position.z);
+        transform.position = Vector3.Lerp(transform.position, targetWithOffet, speed);
+        transform.LookAt(targetWithOffet);
 
     }
 
@@ -76,15 +85,12 @@ public class AI : MonoBehaviour
 
         else if (currentBehavior == Behavior.Aggro)
         {
-            MoveToPlayer();
+            MoveToPlayerLerp();
         }
 
         else if (currentBehavior == Behavior.GotEm)
         {
 
         }
-
-
-
     }
 }
